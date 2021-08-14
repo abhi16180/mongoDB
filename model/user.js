@@ -10,6 +10,10 @@ const User= new mongoose.Schema({
         type:Number,
         required:true,
     },
+    uid:{
+        type:Number,
+        required:true,
+    },
     tasks:{
         type:Array,
 
