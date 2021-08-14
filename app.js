@@ -1,9 +1,10 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+
 const User = require("./model/user");
 require("dotenv/config");
-
+const functions=require('./methods/functions');
 app.use(express.json()) //for json req
 
 
@@ -43,15 +44,12 @@ app.listen(3000, () => {
     console.log('listening to 3000')
 }); */
 app.get( '/',(req,res)=>{
-res.send('get request')
+res.send({
+    user:["abhi","hegde"]
+})
 });
 
-app.get('/display',(req,res)=>{
-    var user=['one','two'];
-    res.send({
-        'user':user
-    })
-})
+app.post('/create',functions.register)
 mongoose.connect(  
     process.env.DB_STRING, 
     {
@@ -64,7 +62,7 @@ mongoose.connect(
     
 );
 
-const p=process.env.PORT
+const p=process.env.PORT||3000
 app.listen(p,()=>{
 console.log( `running at ${p}`);
 })
