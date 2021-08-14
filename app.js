@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-
 const User = require("./model/user");
 require("dotenv/config");
 const functions=require('./methods/functions');
@@ -45,11 +44,13 @@ app.listen(3000, () => {
 }); */
 app.get( '/',(req,res)=>{
 res.send({
-    user:["abhi","hegde"]
+    user:["abhi","hegde"],
 })
 });
 
-app.post('/create',functions.register)
+app.post('/create',functions.register);
+app.post('/login',functions.login);
+app.post('/delete',functions.delete);
 mongoose.connect(  
     process.env.DB_STRING, 
     {
