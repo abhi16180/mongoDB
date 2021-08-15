@@ -9,17 +9,17 @@ var functions = {
         console.log(req.body);
         var user = new User(req.body);
         user.save();
-        res.send(req.body);
+        res.send(user.id);
     },
     login: function (req, res) {
-        res.send('working')
+
         User.findOne({
-            name: req.body.name,
+            uid: req.body.uid,
         }).then((err) => {
             if (!err) {
-                console.log("working");
+                console.log("working1");
             } else {
-                console.log("working");
+                console.log("working2");
             }
         });
     },

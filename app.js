@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const User = require("./model/user");
 require("dotenv/config");
-const functions=require('./methods/functions');
+const functions = require('./methods/functions');
 app.use(express.json()) //for json req
 
 
@@ -42,28 +42,45 @@ mongoose.connect(process.env.DB_STRING,
 app.listen(3000, () => {
     console.log('listening to 3000')
 }); */
-app.get( '/',(req,res)=>{
-res.send({
-    user:["abhi","hegde"],
-})
+app.get('/', (req, res) => {
+    res.send({
+        user: ["abhi", "hegde"],
+    })
 });
 
-app.post('/create',functions.register);
-app.post('/login',functions.login);
-app.post('/delete',functions.delete);
-mongoose.connect(  
-    process.env.DB_STRING, 
+app.post('/create', functions.register);
+app.post('/login', functions.login);
+app.post('/delete', functions.delete);
+app.post('/add', (req, res) => {
+    User.collection.findOne(
+        {
+            name: req.body.name,
+        },
+    ).then(
+        (err, user) => {
+
+            if (err != null) {
+                res.send("found");
+            }
+            else {
+                res.send("not found");
+            }
+        }
+    );
+})
+mongoose.connect(
+    process.env.DB_STRING,
     {
-        useNewUrlParser:true, 
-        useUnifiedTopology:true, 
-    }, 
-    (err,conn)=>{
-    console.log('DB connected');
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    },
+    (err, conn) => {
+        console.log('DB connected');
     }
-    
+
 );
 
-const p=process.env.PORT||3000
-app.listen(p,()=>{
-console.log( `running at ${p}`);
+const p = process.env.PORT || 3000
+app.listen(p, () => {
+    console.log(`running at ${p}`);
 })
