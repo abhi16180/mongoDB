@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const User = require("./model/user");
-require("dotenv/config");
+const UserList = require("./model/user");
+require("dotenv").config();
 const functions = require('./methods/functions');
 app.use(express.json()) //for json req
 
@@ -51,23 +51,26 @@ app.get('/', (req, res) => {
 app.post('/create', functions.register);
 app.post('/login', functions.login);
 app.post('/delete', functions.delete);
-app.post('/add', (req, res) => {
-    User.collection.findOne(
+app.post('/app', (req, res, next) => {
+    UserList.findOne(
         {
             name: req.body.name,
         },
-    ).then(
-        (err, user) => {
-
-            if (err != null) {
-                res.send("found");
-            }
-            else {
-                res.send("not found");
-            }
+    ).then(function (err, user) {
+        if (err)
+            throw err;
+        else if (!err) {
+            res.send('not err');
         }
-    );
-})
+        else if (user) {
+            res.send('user found');
+        }
+        else {
+            res.status(400).send(`${user}`);
+        }
+    }).catch(next);
+
+});
 mongoose.connect(
     process.env.DB_STRING,
     {
